@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Backend;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Admin;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
@@ -28,7 +29,7 @@ class AdminProfileController extends Controller
 
         if($request->file('profile_photo_path')){
             $file=$request->file('profile_photo_path');
-            unlink(public_path('upload/admin_images').$data->profile_photo_path);
+            unlink(public_path('upload/admin_images/').$data->profile_photo_path);
             $filename= date('YmdHi').$file->getClientOriginalName() ;
             $file->move(public_path('upload/admin_images'),$filename);
             $data['profile_photo_path']=$filename;
@@ -71,5 +72,11 @@ class AdminProfileController extends Controller
 
 
     } //end method
+
+
+    public function AllUsers(){
+        $users=User::latest()->get();
+    return view('Backend.user.all_user',compact('users'));
+    }
     
 }
