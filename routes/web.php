@@ -13,6 +13,7 @@ use App\Http\Controllers\backend\ShippingAreaController;
 use App\Http\Controllers\backend\OrderController;
 use App\Http\Controllers\backend\ReportController;
 use App\Http\Controllers\backend\SiteSettingController;
+use App\Http\Controllers\backend\AdminUserController;
 
 
 
@@ -24,6 +25,7 @@ use App\Http\Controllers\User\CartPageController;
 use App\Http\Controllers\User\CheckoutController;
 use App\Http\Controllers\User\CashController;
 use App\Http\Controllers\User\AllUserController;
+use App\Http\Controllers\User\ReviewController;
 
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -377,8 +379,46 @@ Route::get('/coupon-remove', [CartController::class, 'CouponRemove']);
     Route::get('/seo',[SiteSettingController::class,'SeoSetting'])->name('seo-setting');
     Route::post('/seo/setting/{seo_id}',[SiteSettingController::class,'SeoSettingUpdate'])->name('seo.sitesetting');
 
+  });
+
+
+  /// Frontend Product Review Routes
+
+  Route::post('/review/store', [ReviewController::class, 'ReviewStore'])->name('review.store');  
+
+  // Admin Manage Review Routes 
+Route::prefix('review')->group(function(){
+
+    Route::get('/pending', [ReviewController::class, 'PendingReview'])->name('pending.review');
+    
+    Route::get('/admin/approve/{id}', [ReviewController::class, 'ReviewApprove'])->name('review.approve');
+    
+    Route::get('/admin/all/request', [ReviewController::class, 'PublishReview'])->name('all.request');
+
+    Route::get('/delete/{id}', [ReviewController::class, 'DeleteReview'])->name('delete.review');
+    
+    });
+
+
+    // Admin Manage stock  Routes 
+   Route::prefix('stock')->group(function(){
+
+    Route::get('/product', [ProductController::class, 'ProductStock'])->name('product.stock');
+    
+    
+    });
+
+    // Admin User Role Routes 
+Route::prefix('adminuserrole')->group(function(){
+
+    Route::get('/all', [AdminUserController::class, 'AllAdminRole'])->name('all.admin.user');
+    Route::get('/add', [AdminUserController::class, 'AddAdminRole'])->name('add.admin');
+
+    Route::post('/store', [AdminUserController::class, 'StoreAdminRole'])->name('admin.user.store');
+    Route::get('/edit/admin/user/{admin_id}', [AdminUserController::class, 'EditAdminUser'])->name('edit.admin.user');
 
     
-
-  });
+    
+    
+    });
 

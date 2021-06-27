@@ -149,6 +149,10 @@ class OrderController extends Controller
    public function ShippedToDelivered($order_id){
 
     Order::findOrFail($order_id)->update(['status' => 'delivered']);
+    foreach ($product as $item) {
+        Product::where('id',$item->product_id)
+                ->update(['product_qty' => DB::raw('product_qty-'.$item->qty)]);
+    }
 
     $notification = array(
           'message' => 'Order Delivered Successfully',

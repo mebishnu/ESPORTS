@@ -271,6 +271,12 @@ public function ThambnailImageUpdate(Request $request){
        return redirect()->back()->with($notification);
 
     }// end method 
+    
+    // product Stock 
+     public function ProductStock(){
 
+    $products = Product::latest()->get();
+    return view('Backend.product.product_stock',compact('products'));
+  }
 
 }
